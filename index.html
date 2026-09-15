@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta
+    name="description"
+    content="Chat Now — discover people currently available to chat."
+  />
+  <meta name="theme-color" content="#ff3f70" />
+
+  <title>Chat Now</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --pink: #ff2f68;
+      --pink-dark: #e91e59;
+      --orange: #ff7144;
+      --green: #18c978;
+      --ink: #20202a;
+      --muted: #777789;
+      --page: #fff6f8;
+      --line: #f0e7eb;
+      --surface: #ffffff;
+      --shadow: 0 12px 34px rgba(54, 22, 35, 0.1);
+      --radius-lg: 22px;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-width: 320px;
+      margin: 0;
+      padding-bottom: calc(104px + env(safe-area-inset-bottom));
+      color: var(--ink);
+      font-family: "DM Sans", Arial, sans-serif;
+      background:
+        radial-gradient(circle at 100% 0%, rgba(255, 113, 68, 0.13), transparent 27rem),
+        radial-gradient(circle at 0% 30%, rgba(255, 47, 104, 0.09), transparent 23rem),
+        var(--page);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .app-shell {
+      width: min(100%, 560px);
+      min-height: 100vh;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .topbar {
+      position: sticky;
+      z-index: 20;
+      top: 0;
+      padding: max(14px, env(safe-area-inset-top)) 16px 14px;
+      border-bottom: 1px solid rgba(240, 231, 235, 0.8);
+      background: rgba(255, 246, 248, 0.86);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      display: grid;
+      flex: 0 0 auto;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      border-radius: 14px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--pink), var(--orange));
+      box-shadow: 0 8px 18px rgba(255, 47, 104, 0.28);
+    }
+
+    .brand-mark svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .brand-copy {
+      display: grid;
+      gap: 1px;
+    }
+
+    .brand-name {
+      font-size: 17px;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-status {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 4px rgba(24, 201, 120, 0.13);
+    }
+
+    .online-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      flex: 0 0 auto;
+      padding: 9px 11px;
+      border: 1px solid rgba(24, 201, 120, 0.15);
+      border-radius: 999px;
+      color: #0f9e5d;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    /* Hero */
+    .hero {
+      padding: 28px 18px 20px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin: 0 0 10px;
+      padding: 7px 10px;
+      border: 1px solid rgba(255, 47, 104, 0.13);
+      border-radius: 999px;
+      color: var(--pink-dark);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.045em;
+      text-transform: uppercase;
+      background: rgba(255, 255, 255, 0.68);
+    }
+
+    .eyebrow::before {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      content: "";
+      background: var(--pink);
+    }
+
+    h1 {
+      max-width: 450px;
+      margin: 0;
+      font-size: clamp(29px, 8vw, 40px);
+      font-weight: 800;
+      line-height: 1.06;
+      letter-spacing: -0.055em;
+    }
+
+    .hero p {
+      max-width: 410px;
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 1.55;
+    }
+
+    /* Profile Directory */
+    .directory {
+      padding: 0 14px;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 4px 4px 13px;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .section-heading span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .profile-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .profile-card {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 92px;
+      padding: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(240, 231, 235, 0.88);
+      border-radius: var(--radius-lg);
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: var(--shadow);
+      transition: transform 180ms ease, box-shadow 180ms ease;
+    }
+
+    .profile-card::after {
+      position: absolute;
+      right: -25px;
+      bottom: -35px;
+      width: 95px;
+      height: 95px;
+      border-radius: 50%;
+      content: "";
+      opacity: 0.58;
+      pointer-events: none;
+      background: radial-gradient(circle, rgba(255, 47, 104, 0.12), transparent 67%);
+    }
+
+    .profile-card:active {
+      transform: scale(0.985);
+      box-shadow: 0 7px 17px rgba(54, 22, 35, 0.09);
+    }
+
+    .avatar-wrap {
+      position: relative;
+      z-index: 1;
+      flex: 0 0 auto;
+      width: 64px;
+      height: 64px;
+    }
+
+    .avatar {
+      display: block;
+      width: 64px;
+      height: 64px;
+      border: 3px solid #fff;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #f7dce4;
+      box-shadow: 0 0 0 2px rgba(255, 47, 104, 0.38);
+    }
+
+    .presence {
+      position: absolute;
+      right: 0;
+      bottom: 1px;
+      width: 16px;
+      height: 16px;
+      border: 3px solid #fff;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12);
+    }
+
+    .profile-info {
+      z-index: 1;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .profile-name {
+      overflow: hidden;
+      margin: 0;
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1.2;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      letter-spacing: -0.02em;
+    }
+
+    .profile-location {
+      overflow: hidden;
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .profile-meta {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin: 6px 0 0;
+      color: #f04d6e;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .profile-meta svg {
+      width: 13px;
+      height: 13px;
+      fill: currentColor;
+    }
+
+    .call-link {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      flex: 0 0 auto;
+      width: 52px;
+      height: 52px;
+      place-items: center;
+      border-radius: 17px;
+      color: #fff;
+      background: linear-gradient(135deg, #27d987, #0eb866);
+      box-shadow: 0 9px 18px rgba(17, 190, 105, 0.28);
+      transition: transform 160ms ease, filter 160ms ease;
+    }
+
+    .call-link:hover {
+      filter: brightness(1.03);
+      transform: translateY(-2px);
+    }
+
+    .call-link:active {
+      transform: scale(0.92);
+    }
+
+    .call-link svg {
+      width: 22px;
+      height: 22px;
+      fill: currentColor;
+    }
+
+    /* Native Advertisement */
+    .native-ad-section {
+      padding: 22px 14px 0;
+    }
+
+    .ad-label {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0 4px 8px;
+      color: #9c9499;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .ad-label::before,
+    .ad-label::after {
+      height: 1px;
+      flex: 1;
+      content: "";
+      background: #eadfe3;
+    }
+
+    .native-ad-shell {
+      width: 100%;
+      min-height: 112px;
+      overflow: hidden;
+      border: 1px solid rgba(233, 220, 226, 0.95);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.75);
+      box-shadow: 0 10px 26px rgba(54, 22, 35, 0.07);
+      animation: adReveal 500ms ease both;
+    }
+
+    /*
+      This styles only the host container. It does not manipulate
+      the ad-network content loaded within it.
+    */
+    #container-862f141290e2c17aa138242af32bc5c6 {
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    #container-862f141290e2c17aa138242af32bc5c6 iframe,
+    #container-862f141290e2c17aa138242af32bc5c6 img {
+      max-width: 100% !important;
+    }
+
+    @keyframes adReveal {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Sticky Bottom CTA */
+    .bottom-bar {
+      position: fixed;
+      z-index: 30;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+      border-top: 1px solid rgba(240, 231, 235, 0.92);
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    .bottom-bar-inner {
+      width: min(100%, 528px);
+      margin: 0 auto;
+    }
+
+    .main-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      min-height: 56px;
+      padding: 14px 20px;
+      border-radius: 18px;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -0.015em;
+      background: linear-gradient(100deg, var(--pink), var(--orange));
+      box-shadow: 0 12px 25px rgba(255, 61, 101, 0.28);
+      transition: transform 180ms ease, box-shadow 180ms ease;
+    }
+
+    .main-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 28px rgba(255, 61, 101, 0.34);
+    }
+
+    .main-cta:active {
+      transform: scale(0.985);
+    }
+
+    .main-cta svg {
+      width: 19px;
+      height: 19px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.5;
+    }
+
+    @media (min-width: 700px) {
+      body {
+        padding-top: 22px;
+      }
+
+      .app-shell {
+        min-height: calc(100vh - 44px);
+        overflow: hidden;
+        border: 1px solid rgba(240, 231, 235, 0.9);
+        border-radius: 28px;
+        background: rgba(255, 246, 248, 0.55);
+        box-shadow: 0 22px 60px rgba(54, 22, 35, 0.1);
+      }
+
+      .topbar {
+        border-radius: 28px 28px 0 0;
+      }
+    }
+
+    @media (max-width: 370px) {
+      .online-chip {
+        padding: 8px 9px;
+        font-size: 11px;
+      }
+
+      .brand-status {
+        font-size: 11px;
+      }
+
+      .profile-card {
+        gap: 10px;
+        padding: 10px;
+      }
+
+      .avatar-wrap,
+      .avatar {
+        width: 58px;
+        height: 58px;
+      }
+
+      .call-link {
+        width: 48px;
+        height: 48px;
+        border-radius: 15px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="#" aria-label="Chat Now home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path
+                fill="currentColor"
+                d="M4.7 3.5h14.6A2.7 2.7 0 0 1 22 6.2v8.1a2.7 2.7 0 0 1-2.7 2.7H10l-4.65 3.3c-.66.47-1.58 0-1.58-.81V17.1A2.7 2.7 0 0 1 2 14.3V6.2a2.7 2.7 0 0 1 2.7-2.7Zm3.15 6.07a1.08 1.08 0 1 0 0 2.16 1.08 1.08 0 0 0 0-2.16Zm4.15 0a1.08 1.08 0 1 0 0 2.16 1.08 1.08 0 0 0 0-2.16Zm4.15 0a1.08 1.08 0 1 0 0 2.16 1.08 1.08 0 0 0 0-2.16Z"
+              />
+            </svg>
+          </span>
+
+          <span class="brand-copy">
+            <span class="brand-name">Chat Now</span>
+            <span class="brand-status">
+              <span class="live-dot"></span>
+              Meet new people instantly
+            </span>
+          </span>
+        </a>
+
+        <span class="online-chip">
+          <span class="live-dot"></span>
+          <strong id="onlineCount">24</strong> online
+        </span>
+      </div>
+    </header>
+
+    <section class="hero">
+      <span class="eyebrow">Available to chat</span>
+      <h1>Find someone you’d like to talk to.</h1>
+      <p>
+        Browse active profiles and choose one to view available chat options.
+      </p>
+    </section>
+
+    <section class="directory" aria-labelledby="profilesTitle">
+      <div class="section-heading">
+        <h2 id="profilesTitle">Active profiles</h2>
+        <span id="profileCount">7 profiles</span>
+      </div>
+
+      <div id="profileList" class="profile-list"></div>
+    </section>
+
+    <!-- Responsive native ad placed below profiles -->
+    <section class="native-ad-section" aria-label="Advertisement">
+      <div class="ad-label">Advertisement</div>
+
+      <div class="native-ad-shell">
+        <script
+          async="async"
+          data-cfasync="false"
+          src="https://pl29575808.profitableratecpmnetwork.com/862f141290e2c17aa138242af32bc5c6/invoke.js"
+        ></script>
+
+        <div id="container-862f141290e2c17aa138242af32bc5c6"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bottom-bar">
+    <div class="bottom-bar-inner">
+      <a
+        id="moreProfilesButton"
+        class="main-cta"
+        href="#"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        View More Profiles
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 12h14M13 6l6 6-6 6"></path>
+        </svg>
+      </a>
+    </div>
+  </footer>
+
+  <script>
+    /*
+      Edit these values whenever you are ready.
+
+      image = direct PNG/JPG/WebP image URL
+      link  = the destination a user intentionally opens
+    */
+
+    const DESTINATION_URL =
+      "https://www.effectivecpmnetwork.com/ryszwa04?key=23c1f3e598bc1a69dca98b1b2c6a5cc9";
+
+    const MORE_PROFILES_URL = DESTINATION_URL;
+
+    const profiles = [
+      {
+        name: "Sophia Adams",
+        location: "London, United Kingdom",
+        age: 24,
+        image: "https://i.pravatar.cc/160?img=47",
+        link: DESTINATION_URL
+      },
+      {
+        name: "Olivia Carter",
+        location: "Manchester, United Kingdom",
+        age: 26,
+        image: "https://i.pravatar.cc/160?img=32",
+        link: DESTINATION_URL
+      },
+      {
+        name: "Mia Johnson",
+        location: "Birmingham, United Kingdom",
+        age: 23,
+        image: "https://i.pravatar.cc/160?img=44",
+        link: DESTINATION_URL
+      },
+      {
+        name: "Emma Wilson",
+        location: "Leeds, United Kingdom",
+        age: 25,
+        image: "https://i.pravatar.cc/160?img=45",
+        link: DESTINATION_URL
+      },
+      {
+        name: "Ava Thompson",
+        location: "Liverpool, United Kingdom",
+        age: 22,
+        image: "https://i.pravatar.cc/160?img=49",
+        link: DESTINATION_URL
+      },
+      {
+        name: "Isabella Brown",
+        location: "Bristol, United Kingdom",
+        age: 27,
+        image: "https://i.pravatar.cc/160?img=38",
+        link: DESTINATION_URL
+      },
+      {
+        name: "Charlotte Davis",
+        location: "Nottingham, United Kingdom",
+        age: 24,
+        image: "https://i.pravatar.cc/160?img=36",
+        link: DESTINATION_URL
+      }
+    ];
+
+    const profileList = document.getElementById("profileList");
+    const profileCount = document.getElementById("profileCount");
+    const moreProfilesButton = document.getElementById("moreProfilesButton");
+
+    function escapeHtml(value) {
+      const element = document.createElement("div");
+      element.textContent = value;
+      return element.innerHTML;
+    }
+
+    const phoneIcon = `
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M6.62 10.79a15.09 15.09 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.32.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.61 21 3 13.39 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.03l-2.2 2.19Z"/>
+      </svg>
+    `;
+
+    const heartIcon = `
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 21.35 10.55 20C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09A6.01 6.01 0 0 1 16.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.51L12 21.35Z"/>
+      </svg>
+    `;
+
+    function renderProfiles() {
+      profileList.innerHTML = profiles
+        .map((profile) => {
+          const name = escapeHtml(profile.name);
+          const location = escapeHtml(profile.location);
+          const age = escapeHtml(String(profile.age));
+          const image = escapeHtml(profile.image);
+          const link = escapeHtml(profile.link);
+
+          return `
+            <article class="profile-card">
+              <div class="avatar-wrap">
+                <img
+                  class="avatar"
+                  src="${image}"
+                  alt="${name}"
+                  loading="lazy"
+                  onerror="this.src='https://placehold.co/160x160/f8d7e1/ff2f68?text=Chat+Now';"
+                />
+                <span class="presence" aria-label="Online"></span>
+              </div>
+
+              <div class="profile-info">
+                <h3 class="profile-name">${name}</h3>
+                <p class="profile-location">${location}</p>
+                <p class="profile-meta">${heartIcon} ${age} years old</p>
+              </div>
+
+              <a
+                class="call-link"
+                href="${link}"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="View chat options for ${name}"
+              >
+                ${phoneIcon}
+              </a>
+            </article>
+          `;
+        })
+        .join("");
+
+      profileCount.textContent =
+        `${profiles.length} profile${profiles.length === 1 ? "" : "s"}`;
+    }
+
+    moreProfilesButton.href = MORE_PROFILES_URL;
+    renderProfiles();
+  </script>
+<script src="https://pl29575818.profitableratecpmnetwork.com/63/e9/14/63e914a277130d5b86449447c2cb9e37.js"></script>
+</body>
+</html>
